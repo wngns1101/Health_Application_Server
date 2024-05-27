@@ -7,26 +7,31 @@ import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
-import java.util.*
+import java.util.Date
 import javax.crypto.SecretKey
 
 @Configuration
-class TokenProvider (
+class TokenProvider(
     @Value("\${secret-key}")
     val baseKey: String,
     @Value("\${access-token-expire}")
     val accessTokenExpire: Long,
-){
+) {
     private val secretKey: SecretKey = Keys.hmacShaKeyFor(baseKey.toByteArray())
 
     fun create(userEmail: String): String {
         val date = Date()
         date.time += (accessTokenExpire)
 
+        val claims = HashMap<String, Any>()
+        claims["email"] = userEmail
+        claims["tokenType"] = "accessToken"
+
         return Jwts.builder()
             .signWith(SignatureAlgorithm.HS256, secretKey)
             .setSubject(userEmail)
             .setIssuedAt(date)
+            .setClaims(claims)
             .compact()
     }
 
@@ -43,7 +48,6 @@ class TokenProvider (
 
     fun validationAccessToken(accessToken: String) {
         val claims = getClaimsFromToken(accessToken)
-
         if (claims["tokenType"] != "accessToken") {
             throw InvalidTokenException()
         }

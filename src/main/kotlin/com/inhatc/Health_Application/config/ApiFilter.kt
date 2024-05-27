@@ -1,13 +1,13 @@
 package com.inhatc.Health_Application.config
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.inhatc.Health_Application.error.ErrorModel
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
 import jakarta.servlet.ServletResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import com.inhatc.Health_Application.error.ErrorModel
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -22,14 +22,12 @@ class ApiFilter(
 
         var accessToken = req.getHeader("Authorization")
 
-        println(accessToken)
-
-        if (req.requestURI == "$USER_V2_PREFIX/sign-up"){
+        if (req.requestURI == "$USER_V1_PREFIX/sign-up") {
             chain.doFilter(req, res)
             return
         }
 
-        if (req.requestURI == "$USER_V2_PREFIX/sign-in"){
+        if (req.requestURI == "$USER_V1_PREFIX/sign-in") {
             chain.doFilter(req, res)
             return
         }

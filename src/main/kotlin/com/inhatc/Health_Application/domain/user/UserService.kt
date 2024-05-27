@@ -1,9 +1,10 @@
 package com.inhatc.Health_Application.domain.user
 
 import com.inhatc.Health_Application.config.TokenProvider
-import com.inhatc.Health_Application.domain.user.domain.User
 import com.inhatc.Health_Application.domain.user.dto.SignInCommand
 import com.inhatc.Health_Application.domain.user.dto.SignUpCommandDTO
+import com.inhatc.Health_Application.domain.user.dto.UserDTO
+import com.inhatc.Health_Application.domain.user.entity.User
 import com.inhatc.Health_Application.domain.user.error.AlreadySignUpException
 import com.inhatc.Health_Application.domain.user.error.NotFoundUserException
 import com.inhatc.Health_Application.domain.user.repository.UserRepository
@@ -12,10 +13,10 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class UserService (
+class UserService(
     val userRepository: UserRepository,
     val tokenProvider: TokenProvider,
-){
+) {
     @Transactional
     fun signUp(
         command: SignUpCommandDTO,
@@ -26,6 +27,7 @@ class UserService (
         val user = User(
             email = command.email,
             password = command.password,
+            nickname = command.nickname,
             goalCount = command.goalCount,
         ).let {
             userRepository.save(it)
@@ -44,5 +46,24 @@ class UserService (
         }
 
         return tokenProvider.create(checkUser.email)
+    }
+
+    fun getUserDetail(
+        email: String,
+    ): UserDTO {
+        val checkUser = userRepository.findByEmail(email) ?: throw NotFoundUserException()
+
+        return UserDTO(
+            userId = checkUser.userId!!,
+            email = checkUser.email,
+            nickname = checkUser.nickname,
+            goalCount = checkUser.goalCount,
+        )
+    }
+
+    @Transactional
+    fun modifyGoal(email: String, goalCount: Int) {
+        val checkUser = userRepository.findByEmail(email) ?: throw NotFoundUserException()
+        checkUser.goalCount = goalCount
     }
 }

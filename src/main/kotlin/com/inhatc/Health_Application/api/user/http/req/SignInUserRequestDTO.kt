@@ -2,7 +2,7 @@ package com.inhatc.Health_Application.api.user.http.req
 
 import com.inhatc.Health_Application.domain.user.dto.SignInCommand
 
-data class SignInUserRequestDTO (
+data class SignInUserRequestDTO(
     val email: String,
     val password: String,
 )

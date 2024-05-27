@@ -2,12 +2,14 @@ package com.inhatc.Health_Application.config
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
 
+@Configuration
 class ApiFilterConfig {
     private val includeTokenFilterPaths = arrayOf(
-        "$USER_V2_PREFIX/*",
-        "$BOARD_V2_PREFIX/*"
+        "$USER_V1_PREFIX/*",
+        "$CALENDER_V1_PREFIX/*"
     )
     @Bean
     fun tokenFilter(tokenProvider: TokenProvider): FilterRegistrationBean<ApiFilter> {
