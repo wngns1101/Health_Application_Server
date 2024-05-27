@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController
 class UserApiController(
     val userFacade: UserFacade,
 ) {
-    @Operation(method = "[유저-001] 회원가입")
+    @Operation(summary = "[유저-001] 회원가입")
     @PostMapping("/sign-up")
     fun signUp(
         @RequestBody request: SignUpUserRequestDTO
@@ -32,7 +32,7 @@ class UserApiController(
         return SignUpUserResponseDTO(userFacade.signUp(request))
     }
 
-    @Operation(method = "[유저-002] 로그인")
+    @Operation(summary = "[유저-002] 로그인")
     @PostMapping("/sign-in")
     fun signIn(
         @RequestBody request: SignInUserRequestDTO
@@ -40,7 +40,7 @@ class UserApiController(
         return SignInUserResponseDTO(userFacade.signIn(request))
     }
 
-    @Operation(method = "[유저-003] 유저 상세 조회")
+    @Operation(summary = "[유저-003] 유저 상세 조회")
     @GetMapping("/users/me")
     fun userDetail(
         @RequestAttribute("email") email: String,
@@ -48,7 +48,7 @@ class UserApiController(
         return UserDetailResponseDTO(userFacade.getUserDetail(email))
     }
 
-    @Operation(method = "[유저-004] 목표 수정")
+    @Operation(summary = "[유저-004] 목표 수정")
     @PostMapping("/users/me/modify-goal")
     fun modifyGoalCount(
         @RequestAttribute("email") email: String,
