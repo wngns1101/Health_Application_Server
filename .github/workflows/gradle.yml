@@ -22,13 +22,13 @@ jobs:
 
       - name: make application.yml
         run: |
-          cd ./src/main/resources
+          cd src/main/resources
           touch ./jwt.yml
           echo "${{secrets.JWT}}" > ./jwt.yml
 
       - name: make application.yml
         run: |
-          cd ./src/main/resources
+          cd src/main/resources
           touch ./application.yml
           echo "${{secrets.APPLICATION}}" > ./application.yml
 
